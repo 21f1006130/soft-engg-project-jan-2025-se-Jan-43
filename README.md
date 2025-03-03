@@ -27,7 +27,7 @@
    Create a `.env` file in the root of the backend directory and add the following variables:
 
    ```sh
-   GEMINI_API_KET=your_gemini_key
+   GOOGLE_API_KEY=your_gemini_key
    ```
 
 5. Run the application:

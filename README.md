@@ -29,4 +29,3 @@ Zod - For form validation Schema
 DeepChat - For implementing the chat bot.
 Vitest - For unit testing.
 Playwright - For end to end testing.
-

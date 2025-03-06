@@ -3,14 +3,14 @@
 # IITM SWE Project - Team 43 - Frontend Code
 This document contains the details about the implementation of the frontend part of the project without being integrated to the backend.
 
-#How to run the Code
+# How to run the Code
 Download and install node and npm from their website..
 Open the root folder containing the README file in a terminal.
 Run npm install to install the necessary packages.
 Run npm run dev to start the server.
 Use any valid email and any non-empty password to login.
 
-#Libraries and Frameworks used
+# Libraries and Frameworks used
 VueJs - JS framework for building the SPA Application.
 TypeScript - For more efficient coding with the help of type hints.
 Vue Router - Library to implement SPA routing in Vue.

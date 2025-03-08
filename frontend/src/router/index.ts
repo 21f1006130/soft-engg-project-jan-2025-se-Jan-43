@@ -5,6 +5,7 @@ import AdminForm from '@/components/forms/login/AdminForm.vue'
 import FacultyForm from '@/components/forms/login/FacultyForm.vue'
 import StudentForm from '@/components/forms/login/StudentForm.vue'
 import DashboardView from '@/views/DashboardView.vue'
+import StudentDashboard from '@/components/dashboard/StudentDashboard.vue'
 import CourseContainer from '@/components/utils/CourseContainer.vue'
 import AdminView from '@/views/AdminDashboardView.vue'
 
@@ -42,11 +43,13 @@ const router = createRouter({
       name: 'student_dashboard',
       component: DashboardView,
       children: [
-        { path: '', name: 'student_dashboard_default', component: CourseContainer },
+        { path: '', name: 'student_dashboard_default', component: StudentDashboard },
         {
-          path: 'course-se',
+          path: 'courses/:course_id',
           component: SideBarStudent,
-          redirect: '/dashboard/student/course-se/about',
+          redirect: (to) => {
+            return { path: `/dashboard/student/courses/${to.params.course_id}/about` }
+          },
           children: [
             { path: 'about', component: AboutCompStudent },
             { path: 'lecture', component: LectureCompStudent },

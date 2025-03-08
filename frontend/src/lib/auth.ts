@@ -19,8 +19,12 @@ export async function loginStudent(values: any, store: any, form: any, isLoading
       throw new Error('Invalid credentials')
     }
     const data = await response.json()
-    store.accessToken = data.access_token
-    store.isAuthenticated = true
+
+    sessionStorage.setItem('accessToken', data.access_token)
+    sessionStorage.setItem('isAuthenticated', 'true')
+
+    // store.accessToken = data.access_token
+    // store.isAuthenticated = true
 
     router.push({ name: 'student_dashboard_default' })
   } catch (error) {

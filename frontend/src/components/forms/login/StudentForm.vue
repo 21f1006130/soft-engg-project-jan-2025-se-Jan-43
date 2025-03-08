@@ -1,7 +1,6 @@
 <template>
   <Card>
     <form @submit="onSubmit" novalidate>
-      <!-- <StudentForm> -->
       <CardHeader>
         <CardTitle>Student Login</CardTitle>
         <CardDescription> Login with your student email id. </CardDescription>
@@ -25,13 +24,13 @@
             <FormMessage />
           </FormItem>
         </FormField>
+        <ErrorMessage class="text-sm text-destructive font-medium" name="invalid" as="p" />
       </CardContent>
       <CardFooter>
         <Button class="py-5 w-full" type="submit">
           <LoaderCircle class="animate-spin" v-if="isLoading" /> Sign In</Button
         >
       </CardFooter>
-      <!-- </StudentForm> -->
     </form>
   </Card>
 </template>
@@ -43,7 +42,6 @@ import * as z from 'zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { LoaderCircle } from 'lucide-vue-next'
-// import { useToast } from '@/components/ui/toast/use-toast'
 import router from '@/router'
 
 import {
@@ -56,33 +54,30 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { ref } from 'vue'
-// import { h } from 'vue'
+import { ErrorMessage } from 'vee-validate'
+import { useAuthStore } from '@/stores/store'
+import { loginStudent } from '@/lib/auth'
+const store = useAuthStore()
+
 const formSchema = toTypedSchema(
   z.object({
     email: z.string().min(1, 'Email should not be blank.').email('Invalid email address.'),
     password: z.string().min(1, 'Password should not be blank.'),
+    invalid: z.boolean({ message: 'Invalid email or password.' }).optional(),
   }),
 )
 
 const StudentForm = useForm({
   validationSchema: formSchema,
+  initialValues: {
+    email: 'test@gmail.com',
+    password: 'password',
+  },
 })
 
-// const { toast } = useToast()
 const onSubmit = StudentForm.handleSubmit((values) => {
   isLoading.value = true
-  // const vnode = h('div', {
-  //   innerHTML: `<div>Login Details: Email: ${values.email} Password: ${values.password}</div>`,
-  // })
-  setTimeout(() => {
-    isLoading.value = false
-    router.push('/dashboard/student')
-    // toast({
-    //   title: 'Login Successful',
-    //   description: vnode,
-    // })
-  }, 1000)
-  console.log('Student Form submitted!', values)
+  loginStudent(values, store, StudentForm, isLoading)
 })
 
 const isLoading = ref(false)

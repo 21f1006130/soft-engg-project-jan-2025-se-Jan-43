@@ -4,8 +4,10 @@ import google.generativeai as genai
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from app.services.rag_service import RAGService
 
 class ChatService:
+    
     @staticmethod
     def initialize_gemini():
         load_dotenv()
@@ -72,6 +74,9 @@ class ChatService:
     def generate_ai_response(conversation_id, user_message):
         model = ChatService.initialize_gemini()
         
+        # Retrieve top 3 relevant LMS documents for the query
+        retrieved_content = RAGService.retrieve_lms_content(user_message)
+
         # Get recent chat history (just get the last 10 messages to save token usage)
         # we can remove this limit if we want to respond using the entire chat history
         recent_messages = ChatMessage.query.filter_by(conversation_id=conversation_id).order_by(ChatMessage.timestamp.desc()).limit(10).all()
@@ -79,9 +84,19 @@ class ChatService:
         
         # Prepare conversation history for the model
         chat_history = [
-            {"role": msg.sender, "parts": [msg.message_text]}
+            {"role": "user" if msg.sender == "user" else "model", "parts": [msg.message_text]}
             for msg in recent_messages
+            if msg.sender in ["user", "model"]  # ✅ Filter valid roles
         ]
+        # ✅ Inject retrieved LMS content to keep the model on-topic
+        if retrieved_content:
+            system_prompt = f"""You are an AI tutor assisting students based on LMS content. 
+            The most relevant information retrieved from LMS: "{retrieved_content}". 
+            Keep your responses aligned with this context."""
+        
+        # Append the new user message
+        chat_history.insert(0, {"role": "user", "parts": [system_prompt]})  # ✅ Insert at the start
+
         chat_history.append({"role": "user", "parts": [user_message]})
         # print(chat_history)
         

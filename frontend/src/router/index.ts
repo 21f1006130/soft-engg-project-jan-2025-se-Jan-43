@@ -4,15 +4,16 @@ import LoginView from '@/views/LoginView.vue'
 import AdminForm from '@/components/forms/login/AdminForm.vue'
 import FacultyForm from '@/components/forms/login/FacultyForm.vue'
 import StudentForm from '@/components/forms/login/StudentForm.vue'
-import DashboardView from '@/views/DashboardView.vue'
+import DashboardView from '@/views/demo/DashboardView.vue'
 import StudentDashboard from '@/components/dashboard/StudentDashboard.vue'
-import CourseContainer from '@/components/utils/CourseContainer.vue'
-import AdminView from '@/views/AdminDashboardView.vue'
+import CourseContainer from '@/components/utils/demo/CourseContainer.vue'
+import AdminView from '@/views/demo/AdminDashboardView.vue'
 
-import SideBarStudent from '@/components/course_modules/student/SideBar.vue'
+import StudentCourseView from '@/views/StudentCourseView.vue'
 import AboutCompStudent from '@/components/course_modules/student/AboutComp.vue'
 import LectureCompStudent from '@/components/course_modules/student/LectureComp.vue'
 import AssignmentCompStudent from '@/components/course_modules/student/AssignmentComp.vue'
+import ProgAssignmentCompStudent from '@/components/course_modules/student/ProgAssignmentComp.vue'
 
 import SideBarFaculty from '@/components/course_modules/faculty/SideBar.vue'
 import AboutCompFaculty from '@/components/course_modules/faculty/AboutComp.vue'
@@ -44,18 +45,33 @@ const router = createRouter({
       component: DashboardView,
       children: [
         { path: '', name: 'student_dashboard_default', component: StudentDashboard },
-        {
-          path: 'courses/:course_id',
-          component: SideBarStudent,
-          redirect: (to) => {
-            return { path: `/dashboard/student/courses/${to.params.course_id}/about` }
-          },
-          children: [
-            { path: 'about', component: AboutCompStudent },
-            { path: 'lecture', component: LectureCompStudent },
-            { path: 'assignment', component: AssignmentCompStudent },
-          ],
-        },
+        // {
+        //   path: 'courses/:course_id',
+        //   component: SideBarStudent,
+        //   redirect: (to) => {
+        //     return { path: `/dashboard/student/courses/${to.params.course_id}/about` }
+        //   },
+        //   children: [
+        //     { path: 'about', component: AboutCompStudent },
+        //     { path: 'lecture/:lecture_id', component: LectureCompStudent },
+        //     { path: 'assignment/:assignment_id', component: AssignmentCompStudent },
+        //     { path: 'assignment', component: AssignmentCompStudent },
+        //   ],
+        // },
+      ],
+    },
+    {
+      path: '/dashboard/student/courses/:course_id',
+      name: 'student_course_view',
+      component: StudentCourseView,
+      redirect: (to) => {
+        return { path: `/dashboard/student/courses/${to.params.course_id}/about` }
+      },
+      children: [
+        { path: 'about', component: AboutCompStudent },
+        { path: 'lecture/:lecture_id', component: LectureCompStudent },
+        { path: 'assignment', component: AssignmentCompStudent },
+        { path: 'prog_assignment/:prog_assignment_id', component: ProgAssignmentCompStudent },
       ],
     },
     {

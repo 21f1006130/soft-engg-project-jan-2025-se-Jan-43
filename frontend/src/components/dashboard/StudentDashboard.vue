@@ -29,7 +29,7 @@ const courses = ref([])
 const dashboardPath = '/dashboard/student/courses/'
 
 onBeforeMount(() => {
-  checkIsAuthenticated(router)
+  checkIsAuthenticated()
   getStudentCourses(courses, router)
 })
 </script>

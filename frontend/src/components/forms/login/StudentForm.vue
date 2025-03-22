@@ -27,9 +27,7 @@
         <ErrorMessage class="text-sm text-destructive font-medium" name="invalid" as="p" />
       </CardContent>
       <CardFooter>
-        <Button class="py-5 w-full" type="submit">
-          <LoaderCircle class="animate-spin" v-if="isLoading" /> Sign In</Button
-        >
+        <LoadingButton class="w-full" :isLoading="isLoading" type="submit">Sign In</LoadingButton>
       </CardFooter>
     </form>
   </Card>
@@ -41,6 +39,7 @@ import { useForm } from 'vee-validate'
 import * as z from 'zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
+import LoadingButton from '@/components/utils/LoadingButton.vue'
 import { LoaderCircle } from 'lucide-vue-next'
 import router from '@/router'
 

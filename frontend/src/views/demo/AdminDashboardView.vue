@@ -66,6 +66,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { UserPlus2, LogOut, Gauge } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
-import AdminFunction from '@/components/utils/AdminFunction.vue'
+import AdminFunction from '@/components/utils/demo/AdminFunction.vue'
 </script>
 <style scoped></style>

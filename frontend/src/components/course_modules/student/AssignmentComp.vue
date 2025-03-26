@@ -124,7 +124,7 @@
               }}</Label>
             </div>
           </RadioGroup>
-          <div v-if="activeAnswers.score > 0" class="mt-4">
+          <div v-if="activeAnswers.score >= 0" class="mt-4">
             <p class="text-green-600" v-if="getisAnswerCorrectFromSubmission(question.question_id)">
               {{}} Correct
             </p>

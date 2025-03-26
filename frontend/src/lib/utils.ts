@@ -2,7 +2,7 @@ import type { Updater } from '@tanstack/vue-table'
 import { type ClassValue, clsx } from 'clsx'
 import type { Ref } from 'vue'
 import { twMerge } from 'tailwind-merge'
-import { useRouter } from 'vue-router'
+import { useRouter, type Router } from 'vue-router'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -21,15 +21,21 @@ export function checkIsAuthenticated() {
     router.push('/login')
   }
 }
+export function authenticationGuard(router: Router) {
+  if (!(sessionStorage.getItem('isAuthenticated') === 'true')) {
+    return false
+  }
+  return true
+}
 
 export function checkResponse(response: any) {
   if (!response.ok) {
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 422) {
       const router = useRouter()
       sessionStorage.setItem('isAuthenticated', 'false')
       sessionStorage.removeItem('accessToken')
       router.push('/login')
-      throw new Error('Unauthorized')
+      // throw new Error('Unauthorized')
     }
     // console.error(response.status)
   }

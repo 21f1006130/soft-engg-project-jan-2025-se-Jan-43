@@ -17,7 +17,6 @@ async function FETCH_GET(url: string) {
     method: 'GET',
     headers: headers(),
   })
-  const router = useRouter()
   checkResponse(res)
   return await res.json()
 }

@@ -14,16 +14,23 @@
           </aside>
         </Sidebar>
       </SidebarInset>
-      <CourseHeader />
+      <div class="bg-muted w-full">
+        <header class="bg-background sticky top-0">
+          <CourseHeader />
+        </header>
+
+        <main>
+          <RouterView class="px-8" />
+        </main>
+      </div>
     </SidebarProvider>
   </ContainerComponent>
 </template>
 
 <script setup lang="ts">
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { Sidebar, SidebarInset } from '@/components/ui/sidebar'
-import CourseHeader from '@/components/utils/CourseModulesHeader.vue'
-
+import { SidebarProvider, SidebarTrigger, Sidebar, SidebarInset } from '@/components/ui/sidebar'
+import CourseHeader from '@/components/utils/CourseHeader.vue'
+import { RouterView } from 'vue-router'
 import ContainerComponent from '@/components/utils/ContainerComponent.vue'
 import CourseModules from '@/components/course_modules/student/CourseModuleStudent.vue'
 </script>

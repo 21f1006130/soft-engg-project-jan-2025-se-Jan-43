@@ -25,22 +25,9 @@ const currentSelection = router.currentRoute.value.path.split('/')[2]
     </div>
 
     <main class="mt-12 mx-auto max-w-[400px]">
-      <Tabs :default-value="currentSelection">
-        <TabsList class="grid w-full shadow border grid-cols-1 min-[300px]:grid-cols-3 mb-2">
-          <RouterLink tabindex="-1" class="block" draggable="false" to="/login/student">
-            <TabsTrigger class="w-full py-2" value="student">Student</TabsTrigger>
-          </RouterLink>
-          <RouterLink tabindex="-1" class="block" draggable="false" to="/login/faculty">
-            <TabsTrigger class="w-full py-2" value="faculty">Faculty</TabsTrigger>
-          </RouterLink>
-          <RouterLink tabindex="-1" class="block" draggable="false" to="/login/admin">
-            <TabsTrigger class="w-full py-2" value="admin">Admin</TabsTrigger>
-          </RouterLink>
-        </TabsList>
-        <div class="router_wrapper">
-          <RouterView class="shadow" />
-        </div>
-      </Tabs>
+      <div class="router_wrapper">
+        <RouterView class="shadow" />
+      </div>
     </main>
   </ContainerComponent>
 </template>

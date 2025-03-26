@@ -15,7 +15,7 @@ const currentSelection = router.currentRoute.value.path.split('/')[2]
 </script>
 
 <template>
-  <ContainerComponent>
+  <ContainerComponent class="px-6">
     <div class="logo pt-32 flex items-center justify-center">
       <img
         class="aspect-auto max-h-16 min-w-32"

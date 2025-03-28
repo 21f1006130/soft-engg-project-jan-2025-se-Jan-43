@@ -45,6 +45,7 @@ import CourseModules from '@/components/course_modules/student/CourseModuleStude
 import ChatBot from '@/components/utils/ChatBot.vue'
 import { useCourseModuleStore } from '@/stores/store'
 import { ref, watch } from 'vue'
+
 const store = useCourseModuleStore()
 const route = useRoute()
 const path = ref(route.fullPath)

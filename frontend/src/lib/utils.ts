@@ -27,14 +27,36 @@ export function authenticationGuard(router: Router) {
   }
   return true
 }
+import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/toast/use-toast'
+import { h } from 'vue'
 
 export function checkResponse(response: any) {
   if (!response.ok) {
     if (response.status === 401 || response.status === 422) {
+      const { toast } = useToast()
       const router = useRouter()
+      toast({
+        title: 'You are not authenticated.',
+        description: 'Please login again.',
+        variant: 'destructive',
+        action: h(
+          ToastAction,
+          {
+            altText: 'Logout',
+          },
+          {
+            default: () => {
+              return 'Close'
+            },
+          },
+        ),
+      })
       sessionStorage.setItem('isAuthenticated', 'false')
       sessionStorage.removeItem('accessToken')
-      router.push('/login')
+      setTimeout(() => {
+        router.push('/login')
+      }, 2000)
       // throw new Error('Unauthorized')
     }
     // console.error(response.status)

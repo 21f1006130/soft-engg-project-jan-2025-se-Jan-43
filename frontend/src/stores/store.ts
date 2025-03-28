@@ -1,9 +1,8 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useAuthStore = defineStore('auth-store', () => {
-  const isAuthenticated = ref(false)
-  const accessToken = ref('')
+export const useCourseModuleStore = defineStore('course-module-store', () => {
+  const isModuleLoading = ref(false)
 
-  return { isAuthenticated, accessToken }
+  return { isModuleLoading }
 })

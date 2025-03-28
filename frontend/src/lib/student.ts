@@ -12,7 +12,7 @@ function headers() {
   }
 }
 
-async function FETCH_GET(url: string) {
+export async function FETCH_GET(url: string) {
   const res = await fetch(getURL(url), {
     method: 'GET',
     headers: headers(),

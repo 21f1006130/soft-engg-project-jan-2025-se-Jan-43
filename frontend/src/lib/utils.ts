@@ -42,6 +42,19 @@ export function checkResponse(response: any) {
 }
 
 export const deepchatStyles = {
+  chatStyle: {
+    borderRadius: '0rem 0rem 1rem 1rem',
+    borderColor: 'rgb(159, 51, 45)',
+    backgroundColor: 'rgb(241, 245, 249)',
+    // position: 'fixed',
+    // bottom: '7rem',
+    // right: '-2.5rem',
+    'z-index': '9999',
+    paddingTop: '1rem',
+    // width: 'min(400px,calc(100vw - 2rem))',
+    width: '100%',
+    height: '600px',
+  },
   textInput: {
     styles: {
       container: {

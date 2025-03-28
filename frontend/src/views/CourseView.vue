@@ -21,9 +21,12 @@
 
         <main>
           <RouterView class="px-8" />
+          <!-- <div v-show="store.isModuleLoading">...loading</div>
+          <RouterView v-show="!store.isModuleLoading" class="px-8" /> -->
         </main>
       </div>
     </SidebarProvider>
+    <ChatBot />
   </ContainerComponent>
 </template>
 
@@ -33,6 +36,10 @@ import CourseHeader from '@/components/utils/CourseHeader.vue'
 import { RouterView } from 'vue-router'
 import ContainerComponent from '@/components/utils/ContainerComponent.vue'
 import CourseModules from '@/components/course_modules/student/CourseModuleStudent.vue'
+import ChatBot from '@/components/utils/ChatBot.vue'
+import { useCourseModuleStore } from '@/stores/store'
+
+const store = useCourseModuleStore()
 </script>
 
 <style scoped></style>

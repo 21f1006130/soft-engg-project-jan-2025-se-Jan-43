@@ -1,13 +1,13 @@
 <template>
   <nav>
-    <ContainerComponent class="border-b-2 px-8 py-6 flex gap-4 justify-between items-center">
+    <ContainerComponent class="border-b-2 px-6 py-6 flex gap-4 justify-between items-center">
       <SidebarTrigger class="md:hidden h-auto w-auto my-4">
         <AlignJustify class="scale-150" />
       </SidebarTrigger>
       <div class="logo">
         <img src="/IITM-Logo-small.png" class="aspect-auto h-16" alt="IITM Logo" />
       </div>
-      <div class="profile">
+      <div class="profile z-50">
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
             <Button variant="ghost" class="relative h-12 w-12 rounded-full">

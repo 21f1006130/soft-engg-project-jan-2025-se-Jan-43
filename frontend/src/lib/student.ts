@@ -70,6 +70,7 @@ export async function getLecture(
   } catch (e) {
     console.error(e)
     console.log('Failed to fetch Lecture.')
+    throw e
   }
 }
 

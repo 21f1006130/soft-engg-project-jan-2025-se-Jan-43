@@ -15,14 +15,17 @@
         </Sidebar>
       </SidebarInset>
       <div class="bg-muted w-full">
-        <header class="bg-background sticky top-0">
+        <header class="bg-background sticky top-0 z-50">
           <CourseHeader />
         </header>
 
         <main>
-          <RouterView class="px-8" />
-          <!-- <div v-show="store.isModuleLoading">...loading</div>
-          <RouterView v-show="!store.isModuleLoading" class="px-8" /> -->
+          <ProgAssignmentSkeleton
+            v-if="store.isModuleLoading && path.includes('prog_assignment')"
+          />
+          <AssignmentSkeleton v-else-if="store.isModuleLoading && path.includes('assignment')" />
+          <LectureSkeleton v-else-if="store.isModuleLoading && path.includes('lecture')" />
+          <RouterView v-show="!store.isModuleLoading" class="px-6" />
         </main>
       </div>
     </SidebarProvider>
@@ -33,13 +36,25 @@
 <script setup lang="ts">
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarInset } from '@/components/ui/sidebar'
 import CourseHeader from '@/components/utils/CourseHeader.vue'
-import { RouterView } from 'vue-router'
+import AssignmentSkeleton from '@/components/skeletons/AssignmentSkeleton.vue'
+import LectureSkeleton from '@/components/skeletons/LectureSkeleton.vue'
+import ProgAssignmentSkeleton from '@/components/skeletons/ProgAssignmentSkeleton.vue'
+import { RouterView, useRoute } from 'vue-router'
 import ContainerComponent from '@/components/utils/ContainerComponent.vue'
 import CourseModules from '@/components/course_modules/student/CourseModuleStudent.vue'
 import ChatBot from '@/components/utils/ChatBot.vue'
 import { useCourseModuleStore } from '@/stores/store'
-
+import { ref, watch } from 'vue'
 const store = useCourseModuleStore()
+const route = useRoute()
+const path = ref(route.fullPath)
+
+watch(
+  () => route.fullPath,
+  (newPath, oldPath) => {
+    path.value = newPath
+  },
+)
 </script>
 
 <style scoped></style>

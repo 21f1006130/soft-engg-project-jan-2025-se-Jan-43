@@ -79,6 +79,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { checkResponse } from '@/lib/utils'
+import { useCourseModuleStore } from '@/stores/store'
 
 const isCodeSubmitting = ref(false)
 const route = useRoute()
@@ -92,7 +93,7 @@ const activeProgAssignmentSubmission = ref<ProgAssignmentGrade>({
   code: '',
   score: -9999,
 })
-
+const store = useCourseModuleStore()
 const postSubmissionModal = ref({ open: false, success: true })
 
 async function submitCode(e: Event) {
@@ -126,14 +127,32 @@ watch(
   () => route.params.prog_assignment_id,
   (newId, oldId) => {
     activeProgAssignmentId.value = newId
+    store.isModuleLoading = true
     getCourseProgAssignment(activeProgAssignment, activeProgAssignmentId.value, activeProgDescr)
-    getCourseProgAssignmentSubmission(activeProgAssignmentSubmission, activeProgAssignmentId.value)
+      .then(() => {
+        getCourseProgAssignmentSubmission(
+          activeProgAssignmentSubmission,
+          activeProgAssignmentId.value,
+        )
+      })
+      .finally(() => {
+        store.isModuleLoading = false
+      })
   },
 )
 
 onBeforeMount(() => {
+  store.isModuleLoading = true
   getCourseProgAssignment(activeProgAssignment, activeProgAssignmentId.value, activeProgDescr)
-  getCourseProgAssignmentSubmission(activeProgAssignmentSubmission, activeProgAssignmentId.value)
+    .then(() => {
+      getCourseProgAssignmentSubmission(
+        activeProgAssignmentSubmission,
+        activeProgAssignmentId.value,
+      )
+    })
+    .finally(() => {
+      store.isModuleLoading = false
+    })
 })
 </script>
 

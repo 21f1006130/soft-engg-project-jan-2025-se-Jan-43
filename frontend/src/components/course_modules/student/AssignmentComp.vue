@@ -147,6 +147,7 @@
 </template>
 
 <script setup lang="ts">
+import { useCourseModuleStore } from '@/stores/store'
 import LoadingButton from '@/components/utils/LoadingButton.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { Label } from '@/components/ui/label'
@@ -158,7 +159,7 @@ import {
   getCourseAssignmentSubmissionGrade,
   submitAssignment,
 } from '@/lib/student'
-import { onBeforeMount, ref, watch } from 'vue'
+import { onBeforeMount, onMounted, ref, watch } from 'vue'
 import { getCourseAssignmentSubmission } from '@/lib/student'
 import { checkResponse } from '@/lib/utils'
 import {
@@ -195,6 +196,8 @@ const activeSubmissions = ref<
     is_correct: boolean
   }[]
 >([])
+
+const store = useCourseModuleStore()
 
 function getQuestionAnswerFromSubmission(question_id: number | any) {
   for (const submission of activeSubmissions.value) {
@@ -250,12 +253,17 @@ watch(
   () => route.params.course_id,
   (newId, oldId) => {
     activeCourseId.value = newId
+    store.isModuleLoading = true
+
     getCourseAssignment(activeAssignment, courseId, activeParams.value.week, activeParams.value.id)
       .then(() => {
         getCourseAssignmentSubmission(activeSubmissions, activeAssignment.value?.assignment_id)
       })
       .then(() => {
         getCourseAssignmentSubmissionGrade(activeAnswers, activeAssignment.value?.assignment_id)
+      })
+      .finally(() => {
+        store.isModuleLoading = false
       })
   },
 )
@@ -263,6 +271,8 @@ watch(
   () => route.query,
   (newQuery, oldQuery) => {
     activeParams.value = newQuery
+    store.isModuleLoading = true
+
     getCourseAssignment(activeAssignment, courseId, activeParams.value.week, activeParams.value.id)
       .then(() => {
         getCourseAssignmentSubmission(activeSubmissions, activeAssignment.value?.assignment_id)
@@ -270,16 +280,23 @@ watch(
       .then(() => {
         getCourseAssignmentSubmissionGrade(activeAnswers, activeAssignment.value?.assignment_id)
       })
+      .finally(() => {
+        store.isModuleLoading = false
+      })
   },
 )
 
 onBeforeMount(() => {
+  store.isModuleLoading = true
   getCourseAssignment(activeAssignment, courseId, activeParams.value.week, activeParams.value.id)
     .then(() => {
       getCourseAssignmentSubmission(activeSubmissions, activeAssignment.value?.assignment_id)
     })
     .then(() => {
       getCourseAssignmentSubmissionGrade(activeAnswers, activeAssignment.value?.assignment_id)
+    })
+    .finally(() => {
+      store.isModuleLoading = false
     })
 })
 </script>

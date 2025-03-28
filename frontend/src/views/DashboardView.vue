@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav>
-      <ContainerComponent class="border-b-2 py-4 px-6 flex gap-4 justify-between items-center">
+      <ContainerComponent class="border-b-2 py-6 px-6 flex gap-4 justify-between items-center">
         <div class="logo">
           <img src="/IITM-Logo.svg" class="aspect-auto h-16 min-w-72" alt="IITM Logo" />
         </div>

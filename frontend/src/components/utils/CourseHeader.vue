@@ -13,16 +13,18 @@
             <Button variant="ghost" class="relative h-12 w-12 rounded-full">
               <Avatar class="h-12 w-12 border">
                 <AvatarImage src="/avatars/01.png" alt="User Avatar" />
-                <AvatarFallback class="text-xl">TU</AvatarFallback>
+                <AvatarFallback class="text-xl">
+                  {{ userEmail?.charAt(0).toUpperCase() }}
+                </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent class="w-fit" align="end">
             <DropdownMenuLabel class="font-normal flex p-4">
               <div class="flex flex-col space-y-1">
-                <p class="text-sm font-medium leading-none">Test User</p>
+                <p class="text-sm font-medium leading-none">User</p>
                 <p class="text-sm leading-none text-muted-foreground">
-                  ts_21f1003245@ds.study.iitm.ac.in
+                  {{ userEmail }}
                 </p>
               </div>
             </DropdownMenuLabel>
@@ -64,6 +66,7 @@ function logOut() {
   sessionStorage.removeItem('accessToken')
   sessionStorage.removeItem('isAuthenticated')
 }
+const userEmail = sessionStorage.getItem('userEmail')
 </script>
 
 <style scoped></style>

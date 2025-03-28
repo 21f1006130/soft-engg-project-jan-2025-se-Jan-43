@@ -54,9 +54,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ref } from 'vue'
 import { ErrorMessage } from 'vee-validate'
-import { useAuthStore } from '@/stores/store'
 import { loginStudent } from '@/lib/auth'
-const store = useAuthStore()
 
 const formSchema = toTypedSchema(
   z.object({
@@ -76,7 +74,7 @@ const StudentForm = useForm({
 
 const onSubmit = StudentForm.handleSubmit((values) => {
   isLoading.value = true
-  loginStudent(values, store, StudentForm, isLoading)
+  loginStudent(values, StudentForm, isLoading)
 })
 
 const isLoading = ref(false)

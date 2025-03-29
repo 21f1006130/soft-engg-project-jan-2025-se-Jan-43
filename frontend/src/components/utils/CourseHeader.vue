@@ -65,6 +65,7 @@ import ContainerComponent from './ContainerComponent.vue'
 function logOut() {
   sessionStorage.removeItem('accessToken')
   sessionStorage.removeItem('isAuthenticated')
+  sessionStorage.removeItem('userEmail')
 }
 const userEmail = sessionStorage.getItem('userEmail')
 </script>

@@ -1,16 +1,10 @@
 import { type Ref } from 'vue'
 import router from '@/router'
 import { getURL } from '@/lib/utils'
-
+import { FETCH_POST } from './api'
 export async function loginStudent(values: any, form: any, isLoading: Ref<boolean>) {
   try {
-    const response = await fetch(getURL('/auth/login'), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    })
+    const response = await FETCH_POST('/auth/login', values)
     if (!response.ok) {
       // form.setFieldValue('invalid',true )
       form.setErrors({

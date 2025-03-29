@@ -33,7 +33,7 @@
                 </DropdownMenuItem>
               </RouterLink>
               <DropdownMenuSeparator />
-              <RouterLink :to="logoutPath">
+              <RouterLink @click="logOut" :to="logoutPath">
                 <DropdownMenuItem class="px-4 py-2 flex items-center"
                   ><LogOut /> Log out
                 </DropdownMenuItem>
@@ -67,6 +67,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { RouterView } from 'vue-router'
+
+function logOut() {
+  sessionStorage.removeItem('accessToken')
+  sessionStorage.removeItem('isAuthenticated')
+  sessionStorage.removeItem('userEmail')
+}
 
 const userEmail = sessionStorage.getItem('userEmail')
 </script>

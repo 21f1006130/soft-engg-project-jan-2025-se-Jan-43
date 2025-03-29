@@ -17,7 +17,7 @@
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent class="w-fit" align="end">
+            <DropdownMenuContent class="min-w-64" align="end">
               <DropdownMenuLabel class="font-normal flex p-4">
                 <div class="flex flex-col space-y-1">
                   <p class="text-sm font-medium leading-none">User</p>

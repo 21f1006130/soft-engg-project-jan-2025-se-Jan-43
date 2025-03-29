@@ -101,13 +101,15 @@ export const deepchatStyles = {
           marginBottom: '10px',
         },
       },
-      user: { bubble: { marginLeft: '0px', color: 'black' } },
+      user: { bubble: { color: 'black' } },
+      // user: { bubble: { marginLeft: '0px', color: 'black' } },
       ai: { innerContainer: { borderRadius: '15px', backgroundColor: 'white' } },
     },
   },
   avatars: {
     default: {
-      styles: { position: 'left', container: { marginLeft: '12px', marginRight: '5px' } },
+      // styles: { position: 'left', container: { marginLeft: '12px', marginRight: '5px' } },
+      styles: { position: 'right', container: { marginLeft: '12px', marginRight: '5px' } },
     },
     ai: {
       src: '/googleBardLogo.png',

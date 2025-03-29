@@ -265,7 +265,6 @@ export async function handleDeepChatMessage(body: any, signals: Signals) {
       }
       console.log(await res.json())
     } catch (e) {
-      console.error(e)
       signals.onResponse({ error: 'Error' }) // displays an error message
     }
   } else {
@@ -273,7 +272,6 @@ export async function handleDeepChatMessage(body: any, signals: Signals) {
       const res = await CHAT_START(body, signals)
       console.log(await res.json())
     } catch (e) {
-      console.error(e)
       signals.onResponse({ error: 'Error' })
     }
   }

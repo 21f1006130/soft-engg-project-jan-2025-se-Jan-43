@@ -17,18 +17,21 @@
       </PopoverContent>
     </Popover>
   </div>
-  <Dialog class="bg-transparent" v-model:open="modalOpen" :modal="true">
+  <Dialog class="bg-transparent" v-model:open="modalOpen">
     <DialogContent
       class="text-muted p-0 border-0 gap-0 bg-transparent w-[calc(100%-2rem)] sm:w-full h-auto"
     >
       <DialogHeader class="header bg-primary p-4 text-muted rounded-t-2xl">
-        <div class="flex gap-2 items-center justify-center">
-          <img class="h-12 w-12" src="/IITM-Logo.png" alt="IITM Logo" />
-          <h2 class="font-bold text-center">IITM Chat Bot</h2>
-        </div>
+        <DialogTitle>
+          <div class="flex gap-2 items-center justify-center">
+            <img class="h-12 w-12" src="/IITM-Logo.png" alt="IITM Logo" />
+            <h2 class="font-bold text-center">IITM Chat Bot</h2>
+          </div>
+        </DialogTitle>
       </DialogHeader>
       <DialogDescription class="p-0 bg-transparent w-full">
         <deep-chat
+          tabindex="0"
           :chatStyle="deepchatStyles.chatStyle"
           :textInput="deepchatStyles.textInput"
           :messageStyles="deepchatStyles.messageStyles"
@@ -36,6 +39,9 @@
           :speechToText="deepchatStyles.speechToText"
           :submitButtonStyles="deepchatStyles.submitButtonStyles"
           :demo="false"
+          :introMessage="{
+            text: 'Hi I am your AI assistant. Please type your query using the input box below.',
+          }"
           :connect="{
             handler: handleDeepChatMessage,
           }"
@@ -64,6 +70,7 @@ import {
   DialogTrigger,
   DialogDescription,
   DialogClose,
+  DialogTitle,
 } from '@/components/ui/dialog'
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -93,10 +100,11 @@ function continueChat(e: Event) {
 async function loadHistory() {
   const chat_id = localStorage.getItem('deepchat_id') || ''
   const history: historyMessage[] = []
-  history.push({
-    text: 'Please type your query or question as a prompt using the input box below.',
-    role: 'ai',
-  })
+  // history.push({
+  //   // text: 'Please type your query or question as a prompt using the input box below.',
+  //   text: 'Please type your query.',
+  //   role: 'ai',
+  // })
   if (chat_id === '') {
     return history
   }
@@ -111,8 +119,4 @@ async function loadHistory() {
   return history
 }
 </script>
-<style scoped>
-.header svg {
-  stroke: white;
-}
-</style>
+<style></style>

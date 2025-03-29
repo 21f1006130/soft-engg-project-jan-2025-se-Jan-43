@@ -9,7 +9,7 @@
         <Sidebar>
           <aside class="border-r bg-muted h-full overflow-y-auto">
             <nav class="grid items-start px-2 text-md font-medium lg:px-4 divide-y">
-              <CourseModules />
+              <CourseModuleView />
             </nav>
           </aside>
         </Sidebar>
@@ -41,7 +41,7 @@ import LectureSkeleton from '@/components/skeletons/LectureSkeleton.vue'
 import ProgAssignmentSkeleton from '@/components/skeletons/ProgAssignmentSkeleton.vue'
 import { RouterView, useRoute } from 'vue-router'
 import ContainerComponent from '@/components/utils/ContainerComponent.vue'
-import CourseModules from '@/components/course_modules/student/CourseModuleStudent.vue'
+import CourseModuleView from '@/views/CourseModuleView.vue'
 import ChatBot from '@/components/utils/ChatBot.vue'
 import { useCourseModuleStore } from '@/stores/store'
 import { ref, watch } from 'vue'

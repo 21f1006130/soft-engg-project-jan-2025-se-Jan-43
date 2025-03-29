@@ -3,6 +3,9 @@ import { type ClassValue, clsx } from 'clsx'
 import type { Ref } from 'vue'
 import { twMerge } from 'tailwind-merge'
 import { useRouter, type Router } from 'vue-router'
+import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/toast/use-toast'
+import { h } from 'vue'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -27,9 +30,6 @@ export function authenticationGuard(router: Router) {
   }
   return true
 }
-import { ToastAction } from '@/components/ui/toast'
-import { useToast } from '@/components/ui/toast/use-toast'
-import { h } from 'vue'
 
 export function checkResponse(response: any) {
   if (!response.ok) {
@@ -43,7 +43,7 @@ export function checkResponse(response: any) {
         action: h(
           ToastAction,
           {
-            altText: 'Logout',
+            altText: 'Close',
           },
           {
             default: () => {

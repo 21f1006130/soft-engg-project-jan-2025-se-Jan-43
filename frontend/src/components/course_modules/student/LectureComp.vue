@@ -23,7 +23,7 @@ import { useRoute } from 'vue-router'
 import { onBeforeMount, ref, watch } from 'vue'
 import { checkIsAuthenticated } from '@/lib/utils'
 import type { LectureData } from '@/lib/types'
-import { getLecture } from '@/lib/student'
+import { getLecture } from '@/lib/api'
 import { useCourseModuleStore } from '@/stores/store'
 
 const route = useRoute()

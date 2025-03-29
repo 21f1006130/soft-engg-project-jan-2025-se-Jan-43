@@ -190,7 +190,7 @@ import { useRoute } from 'vue-router'
 import { onBeforeMount, ref, watch } from 'vue'
 import { checkIsAuthenticated } from '@/lib/utils'
 import type { Assignments, CourseData, ProgAssignment } from '@/lib/types'
-import { getCourseAssignments, getCourseLectures, getCourseProgAssignments } from '@/lib/student'
+import { getCourseAssignments, getCourseLectures, getCourseProgAssignments } from '@/lib/api'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 
 const route = useRoute()

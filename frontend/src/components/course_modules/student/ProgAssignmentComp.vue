@@ -5,8 +5,8 @@
         <DialogHeader v-if="postSubmissionModal.success">
           <DialogTitle>Success!</DialogTitle>
           <DialogDescription>
-            Your code was submitted successfully.
-            {{ activeProgAssignmentSubmission.score }}
+            Your code was submitted successfully. Final Score:
+            {{ activeProgAssignmentSubmission.score }}%
           </DialogDescription>
         </DialogHeader>
         <DialogHeader v-else>
@@ -63,7 +63,7 @@ import {
   getCourseProgAssignment,
   submitProgAssignment,
   getCourseProgAssignmentSubmission,
-} from '@/lib/student'
+} from '@/lib/api'
 import MDParser from '@/components/utils/MDParser.vue'
 import type { ProgAssignment, ProgAssignmentGrade } from '@/lib/types'
 import { ref, watch } from 'vue'

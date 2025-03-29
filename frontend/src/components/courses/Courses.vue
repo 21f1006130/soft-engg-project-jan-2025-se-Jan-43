@@ -21,7 +21,7 @@ import ContainerComponent from '@/components/utils/ContainerComponent.vue'
 import CourseCard from '@/components/utils/CourseCard.vue'
 import { ref, onBeforeMount } from 'vue'
 import { checkIsAuthenticated } from '@/lib/utils'
-import { getStudentCourses } from '@/lib/student'
+import { getStudentCourses } from '@/lib/api'
 
 const courses = ref([])
 const dashboardPath = '/dashboard/student/courses/'

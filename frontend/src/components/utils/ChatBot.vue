@@ -45,7 +45,7 @@
           :connect="{
             handler: handleDeepChatMessage,
           }"
-          :loadHistory="loadHistory"
+          :loadHistory="getDeepChatHistory"
         >
         </deep-chat>
       </DialogDescription>
@@ -55,30 +55,25 @@
 
 <script setup lang="ts">
 import 'deep-chat'
+
 import { deepchatStyles } from '@/lib/utils'
 import { ref } from 'vue'
 import { BotIcon, PlusCircle, PlayCircle, X } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 
-import { handleDeepChatMessage, getDeepChatHistory } from '@/lib/student'
-import { FETCH_GET } from '@/lib/student'
+import { handleDeepChatMessage, getDeepChatHistory } from '@/lib/api'
+import { FETCH_GET } from '@/lib/api'
 
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTrigger,
   DialogDescription,
-  DialogClose,
   DialogTitle,
 } from '@/components/ui/dialog'
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
-type historyMessage = {
-  text: string
-  role: string
-}
 const modalOpen = ref(false)
 const popoverOpen = ref(false)
 
@@ -95,28 +90,6 @@ function continueChat(e: Event) {
 
   popoverOpen.value = false
   modalOpen.value = true
-}
-
-async function loadHistory() {
-  const chat_id = localStorage.getItem('deepchat_id') || ''
-  const history: historyMessage[] = []
-  // history.push({
-  //   // text: 'Please type your query or question as a prompt using the input box below.',
-  //   text: 'Please type your query.',
-  //   role: 'ai',
-  // })
-  if (chat_id === '') {
-    return history
-  }
-  const data = await FETCH_GET(`/chat/conversations/${chat_id}`)
-  data.messages.forEach((message: any) => {
-    if (message.sender === 'user') {
-      history.push({ text: message.message_text, role: 'user' })
-    } else if (message.sender === 'model') {
-      history.push({ text: message.message_text, role: 'ai' })
-    }
-  })
-  return history
 }
 </script>
 <style></style>

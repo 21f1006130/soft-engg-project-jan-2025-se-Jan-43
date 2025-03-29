@@ -70,3 +70,7 @@ export type ProgAssignmentGrade = {
   code: string
   score: number
 }
+export type historyMessage = {
+  text: string
+  role: string
+}

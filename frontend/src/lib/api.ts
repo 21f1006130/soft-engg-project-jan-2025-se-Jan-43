@@ -1,33 +1,71 @@
 import { getURL } from '@/lib/utils'
 import type { Ref } from 'vue'
 import { checkResponse } from '@/lib/utils'
-import { useRouter } from 'vue-router'
 import { marked } from 'marked'
 import type { Signals } from 'deep-chat/dist/types/handler'
-
+import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/toast/use-toast'
+import { h } from 'vue'
+import type { historyMessage } from './types'
 function headers() {
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
   }
 }
+function handleBackendProblem() {
+  const { toast } = useToast()
 
-export async function FETCH_GET(url: string) {
-  const res = await fetch(getURL(url), {
-    method: 'GET',
-    headers: headers(),
+  toast({
+    title: 'Error!',
+    description: 'An unknown error occurred.',
+    variant: 'destructive',
+    action: h(
+      ToastAction,
+      {
+        altText: 'Close',
+      },
+      {
+        default: () => {
+          return 'Close'
+        },
+      },
+    ),
   })
-  checkResponse(res)
-  return await res.json()
 }
-
+export async function FETCH_GET(url: string) {
+  try {
+    const res = await fetch(getURL(url), {
+      method: 'GET',
+      headers: headers(),
+    })
+    checkResponse(res)
+    return await res.json()
+  } catch (e) {
+    handleBackendProblem()
+    throw e
+  }
+}
+export async function FETCH_POST(url: string, body: any) {
+  try {
+    const res = await fetch(getURL(url), {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify(body),
+    })
+    checkResponse(res)
+    return res
+  } catch (e) {
+    handleBackendProblem()
+    throw e
+  }
+}
 export async function getStudentCourses(courses: Ref<any>, router: any) {
   try {
     const data = await FETCH_GET('/courses/')
     courses.value = data
   } catch (e) {
     console.error(e)
-    console.log('Failed to fetch courses.')
   }
 }
 
@@ -53,7 +91,6 @@ export async function getCourseLectures(
     })
   } catch (e) {
     console.error(e)
-    console.log('Failed to fetch Lectures.')
   }
 }
 
@@ -69,7 +106,6 @@ export async function getLecture(
     videoURL.value = 'https://www.youtube.com/embed/' + data['lecture_url'].split('?v=')[1]
   } catch (e) {
     console.error(e)
-    console.log('Failed to fetch Lecture.')
     throw e
   }
 }
@@ -81,7 +117,6 @@ export async function getCourseAssignments(assignments: Ref<any>, courseId: any)
     assignments.value = data
   } catch (e) {
     console.error(e)
-    console.log('Failed to fetch Assignments.')
   }
 }
 
@@ -96,7 +131,6 @@ export async function getCourseAssignment(
     assignment.value = data[parseInt(week) - 1]['assignments'][parseInt(assignmentId) - 1]
   } catch (e) {
     console.error(e)
-    console.log('Failed to fetch Assignment.')
   }
 }
 
@@ -111,7 +145,9 @@ export async function getCourseAssignmentSubmission(
     } else {
       activeAssignmentSubmissions.value = data
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 export async function getCourseAssignmentSubmissionGrade(
@@ -127,13 +163,10 @@ export async function getCourseAssignmentSubmissionGrade(
 }
 
 export async function submitAssignment(data: any, assignment_id: any) {
-  const url = getURL(`/assignments/submit`)
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: headers(),
-    body: JSON.stringify({ assignment_id: assignment_id, answers: data }),
+  const res = await FETCH_POST(`/assignments/submit`, {
+    assignment_id: assignment_id,
+    answers: data,
   })
-  checkResponse(res)
   return res
 }
 
@@ -196,23 +229,14 @@ export async function getCourseProgAssignmentSubmission(
 }
 
 export async function submitProgAssignment(data: any, prog_assignment_id: any) {
-  const url = getURL(`/programming_assignments/${prog_assignment_id}/submit`)
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: headers(),
-    body: JSON.stringify({ code: data[1] }),
+  const res = await FETCH_POST(`/programming_assignments/${prog_assignment_id}/submit`, {
+    code: data[1],
   })
-  checkResponse(res)
   return res
 }
 
 async function CHAT_START(body: any, signals: Signals) {
-  const res = await fetch(getURL(`/chat/start`), {
-    method: 'POST',
-    headers: headers(),
-    body: JSON.stringify({ message: body.messages[0].text }),
-  })
-  checkResponse(res)
+  const res = await FETCH_POST(`/chat/start`, { message: body.messages[0].text })
   const data = await res.json()
 
   localStorage.setItem('deepchat_id', data.conversation.conversation_id)
@@ -221,35 +245,29 @@ async function CHAT_START(body: any, signals: Signals) {
 }
 
 async function CHAT_CONTINUE(body: any, chat_id: any, signals: Signals) {
-  const res = await fetch(getURL(`/chat/continue/${chat_id}`), {
-    method: 'POST',
-    headers: headers(),
-    body: JSON.stringify({ message: body.messages[0].text }),
-  })
-  checkResponse(res)
+  const res = await FETCH_POST(`/chat/continue/${chat_id}`, { message: body.messages[0].text })
   const data = await res.json()
 
   signals.onResponse({ text: data.ai_message.message_text })
   return res
 }
 
-type message = { text: string; role: string }
-
 export async function getDeepChatHistory(history: Ref<any>) {
   try {
     const chat_id = localStorage.getItem('deepchat_id') || ''
-    const res = await fetch(getURL(`/chat/continue/${chat_id}`))
-    checkResponse(res)
-    if (res.status === 404) {
-      history.value = []
-    } else {
-      const data = await res.json()
-      const messages: message[] = []
-      data.messages.forEach((message: any) => {
-        messages.push({ text: message.message_text, role: message.sender })
-      })
-      history.value = messages
+    const history: historyMessage[] = []
+    if (chat_id === '') {
+      return history
     }
+    const data = await FETCH_GET(`/chat/conversations/${chat_id}`)
+    data.messages.forEach((message: any) => {
+      if (message.sender === 'user') {
+        history.push({ text: message.message_text, role: 'user' })
+      } else if (message.sender === 'model') {
+        history.push({ text: message.message_text, role: 'ai' })
+      }
+    })
+    return history
   } catch (error) {
     console.error(error)
   }
@@ -270,7 +288,6 @@ export async function handleDeepChatMessage(body: any, signals: Signals) {
   } else {
     try {
       const res = await CHAT_START(body, signals)
-      console.log(await res.json())
     } catch (e) {
       signals.onResponse({ error: 'Error' })
     }

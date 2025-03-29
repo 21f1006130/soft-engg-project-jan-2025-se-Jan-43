@@ -158,9 +158,9 @@ import {
   getCourseAssignment,
   getCourseAssignmentSubmissionGrade,
   submitAssignment,
-} from '@/lib/student'
+} from '@/lib/api'
 import { onBeforeMount, onMounted, ref, watch } from 'vue'
-import { getCourseAssignmentSubmission } from '@/lib/student'
+import { getCourseAssignmentSubmission } from '@/lib/api'
 import { checkResponse } from '@/lib/utils'
 import {
   Dialog,

@@ -38,10 +38,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import * as z from 'zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
 import LoadingButton from '@/components/utils/LoadingButton.vue'
-import { LoaderCircle } from 'lucide-vue-next'
-import router from '@/router'
 
 import {
   Card,
@@ -67,8 +64,8 @@ const formSchema = toTypedSchema(
 const StudentForm = useForm({
   validationSchema: formSchema,
   initialValues: {
-    email: 'test@gmail.com',
-    password: 'password',
+    email: '',
+    password: '',
   },
 })
 

@@ -108,13 +108,6 @@ const formSchema = toTypedSchema(
 
 const StudentForm = useForm({
   validationSchema: formSchema,
-  initialValues: {
-    first_name: 'aa',
-    last_name: 'aa',
-    email: 'a@a.com',
-    password: 'pass',
-    confirm_password: 'pass',
-  },
 })
 
 const onSubmit = StudentForm.handleSubmit((values) => {

@@ -2,10 +2,8 @@ import type { Updater } from '@tanstack/vue-table'
 import { type ClassValue, clsx } from 'clsx'
 import type { Ref } from 'vue'
 import { twMerge } from 'tailwind-merge'
-import { useRouter, type Router } from 'vue-router'
-import { ToastAction } from '@/components/ui/toast'
+import { type Router } from 'vue-router'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { h } from 'vue'
 import router from '@/router'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -35,26 +33,15 @@ export function checkResponse(response: any) {
     if (response.status === 401 || response.status === 422) {
       const { toast } = useToast()
       toast({
-        title: 'You are not authenticated.',
-        description: 'Please login again.',
+        title: 'You are not logged in.',
+        description: 'You will be redirected to the login screen in a few seconds.',
         variant: 'destructive',
-        action: h(
-          ToastAction,
-          {
-            altText: 'Close',
-          },
-          {
-            default: () => {
-              return 'Close'
-            },
-          },
-        ),
       })
       sessionStorage.setItem('isAuthenticated', 'false')
       sessionStorage.removeItem('accessToken')
       setTimeout(() => {
         router.push('/login')
-      }, 2000)
+      }, 3000)
       // throw new Error('Unauthorized')
     }
     // console.error(response.status)
@@ -66,12 +53,8 @@ export const deepchatStyles = {
     borderRadius: '0rem 0rem 1rem 1rem',
     borderColor: 'rgb(159, 51, 45)',
     backgroundColor: 'rgb(241, 245, 249)',
-    // position: 'fixed',
-    // bottom: '7rem',
-    // right: '-2.5rem',
     'z-index': '9999',
     paddingTop: '1rem',
-    // width: 'min(400px,calc(100vw - 2rem))',
     width: '100%',
     height: '600px',
   },
@@ -95,20 +78,23 @@ export const deepchatStyles = {
         bubble: {
           maxWidth: '100%',
           backgroundColor: 'unset',
-          marginTop: '10px',
-          marginBottom: '10px',
+          marginBottom: '20px',
           'overflow-x': 'auto',
         },
+        innerContainer: {
+          marginTop: '10px',
+        },
       },
-      user: { bubble: { color: 'black' } },
-      // user: { bubble: { marginLeft: '0px', color: 'black' } },
+      user: {
+        bubble: { marginLeft: '0px', color: 'black' },
+        innerContainer: { borderRadius: '15px' },
+      },
       ai: { innerContainer: { borderRadius: '15px', backgroundColor: 'white' } },
     },
   },
   avatars: {
     default: {
-      // styles: { position: 'left', container: { marginLeft: '12px', marginRight: '5px' } },
-      styles: { position: 'right', container: { marginLeft: '12px', marginRight: '5px' } },
+      styles: { position: 'left', container: { marginLeft: '12px', marginRight: '5px' } },
     },
     ai: {
       src: '/googleBardLogo.png',

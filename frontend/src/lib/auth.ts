@@ -4,7 +4,7 @@ import { getURL } from '@/lib/utils'
 import { FETCH_POST } from './api'
 export async function loginStudent(values: any, form: any, isLoading: Ref<boolean>) {
   try {
-    const response = await FETCH_POST('/auth/login', values)
+    const response = await FETCH_POST('/auth/login', values, false)
     if (!response.ok) {
       // form.setFieldValue('invalid',true )
       form.setErrors({

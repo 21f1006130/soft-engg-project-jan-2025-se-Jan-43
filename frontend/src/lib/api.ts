@@ -46,14 +46,16 @@ export async function FETCH_GET(url: string) {
     throw e
   }
 }
-export async function FETCH_POST(url: string, body: any) {
+export async function FETCH_POST(url: string, body: any, checkRes = true) {
   try {
     const res = await fetch(getURL(url), {
       method: 'POST',
       headers: headers(),
       body: JSON.stringify(body),
     })
-    checkResponse(res)
+    if (checkRes) {
+      checkResponse(res)
+    }
     return res
   } catch (e) {
     handleBackendProblem()

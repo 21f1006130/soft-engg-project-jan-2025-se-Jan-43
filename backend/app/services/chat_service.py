@@ -86,13 +86,15 @@ class ChatService:
         chat_history = [
             {"role": "user" if msg.sender == "user" else "model", "parts": [msg.message_text]}
             for msg in recent_messages
-            if msg.sender in ["user", "model"]  # ✅ Filter valid roles
+            if msg.sender in ["user", "model"]  # Filter valid roles
         ]
-        # ✅ Inject retrieved LMS content to keep the model on-topic
+        # Inject retrieved LMS content to keep the model on-topic
         if retrieved_content:
-            system_prompt = f"""You are an AI tutor assisting students based on LMS content. 
-            The most relevant information retrieved from LMS: "{retrieved_content}". 
-            Keep your responses aligned with this context."""
+            system_prompt = f"""
+                You are an AI tutor guiding students based on LMS content. 
+                Your role is to help them understand concepts, improve learning strategies, and maintain academic integrity.
+                The most relevant information retrieved from LMS: "{retrieved_content}". 
+                Base your response strictly on this context. If no relevant content is found, guide the student toward effective study methods or reference official LMS materials."""
         
         # Append the new user message
         chat_history.insert(0, {"role": "user", "parts": [system_prompt]})  # ✅ Insert at the start

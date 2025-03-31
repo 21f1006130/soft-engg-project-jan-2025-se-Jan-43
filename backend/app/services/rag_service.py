@@ -36,5 +36,5 @@ class RAGService:
         results = RAGService.collection.query(query_embeddings=[query_embedding])
 
         if results and results.get("documents"):
-            return results["documents"][0][0] if results["documents"][0] else ""
+            return results["documents"][0] if results["documents"][0] else ""
         return ""

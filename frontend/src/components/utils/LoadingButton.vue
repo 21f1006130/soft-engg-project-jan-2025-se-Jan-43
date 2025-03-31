@@ -1,5 +1,5 @@
 <template>
-  <Button class="py-5" type="submit">
+  <Button :disabled="props.isLoading" class="py-5" type="submit">
     <LoaderCircle class="animate-spin" v-if="props.isLoading" />
     <slot></slot>
   </Button>

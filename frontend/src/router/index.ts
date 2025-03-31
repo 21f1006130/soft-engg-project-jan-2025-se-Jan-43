@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import LoginView from '@/views/LoginView.vue'
+import AuthView from '@/views/AuthView.vue'
 import CourseView from '@/views/CourseView.vue'
 import Courses from '@/components/courses/Courses.vue'
 import DashboardView from '@/views/DashboardView.vue'
-import StudentForm from '@/components/forms/login/StudentForm.vue'
+import StudentLoginForm from '@/components/forms/login/StudentForm.vue'
+import StudentRegistrationForm from '@/components/forms/registration/StudentForm.vue'
 import AboutCompStudent from '@/components/course_modules/student/AboutComp.vue'
 import LectureCompStudent from '@/components/course_modules/student/LectureComp.vue'
 import AssignmentCompStudent from '@/components/course_modules/student/AssignmentComp.vue'
@@ -22,9 +23,16 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginView,
+      component: AuthView,
       redirect: '/login/student',
-      children: [{ path: 'student', component: StudentForm }],
+      children: [{ path: 'student', component: StudentLoginForm }],
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: AuthView,
+      redirect: '/register/student',
+      children: [{ path: 'student', component: StudentRegistrationForm }],
     },
     {
       path: '/dashboard/student',
@@ -49,7 +57,7 @@ const router = createRouter({
   ],
 })
 router.beforeEach((to, from, next) => {
-  if (to.fullPath.startsWith('/login')) {
+  if (to.fullPath.startsWith('/login') || to.fullPath.startsWith('/register')) {
     next()
   } else {
     if (authenticationGuard(router)) {

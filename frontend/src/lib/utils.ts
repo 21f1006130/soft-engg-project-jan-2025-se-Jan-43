@@ -6,7 +6,7 @@ import { useRouter, type Router } from 'vue-router'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { h } from 'vue'
-
+import router from '@/router'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -19,7 +19,6 @@ export function getURL(url: string) {
 }
 
 export function checkIsAuthenticated() {
-  const router = useRouter()
   if (!(sessionStorage.getItem('isAuthenticated') === 'true')) {
     router.push('/login')
   }
@@ -35,7 +34,6 @@ export function checkResponse(response: any) {
   if (!response.ok) {
     if (response.status === 401 || response.status === 422) {
       const { toast } = useToast()
-      const router = useRouter()
       toast({
         title: 'You are not authenticated.',
         description: 'Please login again.',

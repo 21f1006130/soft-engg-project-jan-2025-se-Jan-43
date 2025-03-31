@@ -97,6 +97,7 @@ export const deepchatStyles = {
           backgroundColor: 'unset',
           marginTop: '10px',
           marginBottom: '10px',
+          'overflow-x': 'auto',
         },
       },
       user: { bubble: { color: 'black' } },

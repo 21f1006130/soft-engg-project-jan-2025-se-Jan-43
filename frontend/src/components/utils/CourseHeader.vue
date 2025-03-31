@@ -11,8 +11,8 @@
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
             <Button variant="ghost" class="relative h-12 w-12 rounded-full">
-              <Avatar class="h-12 w-12 border">
-                <AvatarImage src="/avatars/01.png" alt="User Avatar" />
+              <Avatar class="h-12 w-12 p-2 border">
+                <AvatarImage src="/user.svg" alt="User Avatar" />
                 <AvatarFallback class="text-xl">
                   {{ userEmail?.charAt(0).toUpperCase() }}
                 </AvatarFallback>

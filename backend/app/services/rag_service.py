@@ -59,7 +59,7 @@ class RAGService:
 
         if results and results.get("documents") and results["documents"][0]:
             similarity_score = results["distances"][0]  # Retrieve similarity score
-            threshold = 0.8  # Adjust based on testing
+            threshold = 0.6 # Adjust based on testing
             print(f"Similarity scores for query '{query}': {similarity_score}")
             return any (score < threshold for score in similarity_score)  # Block answering if similarity is high
 

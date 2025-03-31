@@ -76,37 +76,40 @@ class ChatService:
         
         # Retrieve top 3 relevant LMS documents for the query
         retrieved_content = RAGService.retrieve_lms_content(user_message)
+        restricted_question = RAGService.is_restricted_question(user_message)
+        if restricted_question:
+            message = "This question is restricted and cannot be answered."
+            ai_chat_message = ChatMessage(conversation_id=conversation_id, message_text=message, sender="model")
+        else:
+            # Get recent chat history (just get the last 10 messages to save token usage)
+            # we can remove this limit if we want to respond using the entire chat history
+            recent_messages = ChatMessage.query.filter_by(conversation_id=conversation_id).order_by(ChatMessage.timestamp.desc()).limit(10).all()
+            recent_messages.reverse()  # Reverse to get chronological order
+            
+            # Prepare conversation history for the model
+            chat_history = [
+                {"role": "user" if msg.sender == "user" else "model", "parts": [msg.message_text]}
+                for msg in recent_messages
+                if msg.sender in ["user", "model"]  # Filter valid roles
+            ]
+            # Inject retrieved LMS content to keep the model on-topic
+            if retrieved_content:
+                system_prompt = f"""
+                    You are an AI tutor guiding students based on LMS content. 
+                    Your role is to help them understand concepts, improve learning strategies, and maintain academic integrity.
+                    The most relevant information retrieved from LMS: "{retrieved_content}". 
+                    Base your response strictly on this context. If no relevant content is found, guide the student toward effective study methods or reference official LMS materials."""
+            
+            # Append the new user message
+            chat_history.insert(0, {"role": "user", "parts": [system_prompt]})  # Insert at the start
 
-        # Get recent chat history (just get the last 10 messages to save token usage)
-        # we can remove this limit if we want to respond using the entire chat history
-        recent_messages = ChatMessage.query.filter_by(conversation_id=conversation_id).order_by(ChatMessage.timestamp.desc()).limit(10).all()
-        recent_messages.reverse()  # Reverse to get chronological order
-        
-        # Prepare conversation history for the model
-        chat_history = [
-            {"role": "user" if msg.sender == "user" else "model", "parts": [msg.message_text]}
-            for msg in recent_messages
-            if msg.sender in ["user", "model"]  # Filter valid roles
-        ]
-        # Inject retrieved LMS content to keep the model on-topic
-        if retrieved_content:
-            system_prompt = f"""
-                You are an AI tutor guiding students based on LMS content. 
-                Your role is to help them understand concepts, improve learning strategies, and maintain academic integrity.
-                The most relevant information retrieved from LMS: "{retrieved_content}". 
-                Base your response strictly on this context. If no relevant content is found, guide the student toward effective study methods or reference official LMS materials."""
-        
-        # Append the new user message
-        chat_history.insert(0, {"role": "user", "parts": [system_prompt]})  # ✅ Insert at the start
+            chat_history.append({"role": "user", "parts": [user_message]})
+            # print(chat_history)
+            
+            # Generate response from Gemini
+            response = model.generate_content(chat_history)
 
-        chat_history.append({"role": "user", "parts": [user_message]})
-        # print(chat_history)
-        
-        # Generate response from Gemini
-        response = model.generate_content(chat_history)
-
-        # Save AI response
-        ai_chat_message = ChatMessage(conversation_id=conversation_id, message_text=response.text, sender="model")
+            # Save AI response
+            ai_chat_message = ChatMessage(conversation_id=conversation_id, message_text=response.text, sender="model")
         db.session.add(ai_chat_message)
-
         return ai_chat_message

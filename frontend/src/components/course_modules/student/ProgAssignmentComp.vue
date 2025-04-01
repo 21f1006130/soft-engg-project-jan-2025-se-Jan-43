@@ -39,13 +39,13 @@
             class="font-mono p-8 h-72 bg-gray-200"
           />
 
-          <p class="mt-4 font-bold" v-if="activeProgAssignmentSubmission.score >= 0">
+          <p class="mt-4 text-sm font-bold" v-if="activeProgAssignmentSubmission.score >= 0">
             Final Score: {{ activeProgAssignmentSubmission.score }}%
           </p>
           <LoadingButton
             :is-loading="isCodeSubmitting"
             :disabled="isCodeSubmitting || activeProgAssignmentSubmission.score >= 0"
-            class="mt-8 mb-8 bg-foreground rounded-none"
+            class="mt-4 mb-8 bg-foreground rounded-none"
             type="submit"
             >Submit Code</LoadingButton
           >

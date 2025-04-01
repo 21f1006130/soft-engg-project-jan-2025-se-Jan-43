@@ -125,14 +125,17 @@
             </div>
           </RadioGroup>
           <div v-if="activeAnswers.score >= 0" class="mt-4">
-            <p class="text-green-600" v-if="getisAnswerCorrectFromSubmission(question.question_id)">
+            <p
+              class="text-green-600 text-sm font-medium"
+              v-if="getisAnswerCorrectFromSubmission(question.question_id)"
+            >
               {{}} Correct
             </p>
-            <p class="text-destructive" v-else>{{}} Incorrect</p>
+            <p class="text-destructive text-sm font-medium" v-else>{{}} Incorrect</p>
           </div>
         </div>
       </div>
-      <p class="mt-4 font-bold" v-if="activeAnswers.score >= 0">
+      <p class="mt-4 text-sm font-bold" v-if="activeAnswers.score >= 0">
         Final Score: {{ activeAnswers.score.toPrecision(3) }}%
       </p>
       <LoadingButton

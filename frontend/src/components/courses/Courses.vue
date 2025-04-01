@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import router from '@/router'
 import ContainerComponent from '@/components/utils/ContainerComponent.vue'
 import CourseCard from '@/components/utils/CourseCard.vue'
 import { ref, onBeforeMount } from 'vue'
@@ -28,7 +27,7 @@ const dashboardPath = '/dashboard/student/courses/'
 
 onBeforeMount(() => {
   checkIsAuthenticated()
-  getStudentCourses(courses, router)
+  getStudentCourses(courses)
 })
 </script>
 <style scoped></style>

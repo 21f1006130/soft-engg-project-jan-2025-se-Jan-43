@@ -15,9 +15,13 @@
         </Sidebar>
       </SidebarInset>
       <div class="bg-muted w-full">
-        <header class="bg-background sticky top-0 z-50">
-          <CourseHeader />
-        </header>
+        <Header class="bg-background sticky top-0 z-50" logoSrc="/IITM-Logo-small.png">
+          <template #sidebar_trigger>
+            <SidebarTrigger class="md:hidden h-auto w-auto my-4">
+              <AlignJustify class="scale-150" />
+            </SidebarTrigger>
+          </template>
+        </Header>
 
         <main>
           <ProgAssignmentSkeleton
@@ -35,7 +39,7 @@
 
 <script setup lang="ts">
 import { SidebarProvider, SidebarTrigger, Sidebar, SidebarInset } from '@/components/ui/sidebar'
-import CourseHeader from '@/components/utils/CourseHeader.vue'
+import Header from '@/components/utils/Header.vue'
 import AssignmentSkeleton from '@/components/skeletons/AssignmentSkeleton.vue'
 import LectureSkeleton from '@/components/skeletons/LectureSkeleton.vue'
 import ProgAssignmentSkeleton from '@/components/skeletons/ProgAssignmentSkeleton.vue'
@@ -45,6 +49,7 @@ import CourseModuleView from '@/views/CourseModuleView.vue'
 import ChatBot from '@/components/utils/ChatBot.vue'
 import { useCourseModuleStore } from '@/stores/store'
 import { ref, watch } from 'vue'
+import { AlignJustify } from 'lucide-vue-next'
 
 const store = useCourseModuleStore()
 const route = useRoute()

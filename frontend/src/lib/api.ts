@@ -62,7 +62,7 @@ export async function FETCH_POST(url: string, body: any, checkRes = true) {
     throw e
   }
 }
-export async function getStudentCourses(courses: Ref<any>, router: any) {
+export async function getStudentCourses(courses: Ref<any>) {
   try {
     const data = await FETCH_GET('/courses/')
     courses.value = data

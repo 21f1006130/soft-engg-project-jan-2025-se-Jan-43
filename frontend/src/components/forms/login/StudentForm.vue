@@ -26,8 +26,13 @@
         </FormField>
         <ErrorMessage class="text-sm text-destructive font-medium" name="invalid" as="p" />
       </CardContent>
-      <CardFooter>
+      <CardFooter class="flex flex-col gap-4">
         <LoadingButton class="w-full" :isLoading="isLoading" type="submit">Sign In</LoadingButton>
+        <RouterLink
+          class="text-sm font-medium self-start text-primary hover:text-foreground focus-visible:text-foreground"
+          to="/register/student"
+          >Not registered? Register here.
+        </RouterLink>
       </CardFooter>
     </form>
   </Card>

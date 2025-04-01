@@ -88,7 +88,7 @@ ESLint - For better code practices.
 
 Prettier - Formatter to make the code look good.
 
-shadchan-vue - The UI library used.
+shadcn-vue - The UI library used.
 
 Lucide Vue - The icon library used.
 
